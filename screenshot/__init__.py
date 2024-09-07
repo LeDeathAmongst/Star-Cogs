@@ -24,7 +24,7 @@ del Star_Utils
 from redbot.core.bot import Red  # isort:skip
 from redbot.core.utils import get_end_user_data_statement
 
-from .autodocsite import Screenshot  # Import your cog
+from .screenshot import Screenshot  # Import your cog
 
 __red_end_user_data_statement__ = get_end_user_data_statement(file=__file__)
 
