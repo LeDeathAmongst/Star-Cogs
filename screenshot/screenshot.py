@@ -2,6 +2,7 @@ import io
 import logging
 import platform
 import subprocess
+import asyncio
 from typing import List
 
 import discord
@@ -14,7 +15,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import asyncio
 
 log = logging.getLogger("star.screenshot")
 
@@ -26,6 +26,19 @@ class Screenshot(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.ensure_chrome_installed()
+        # Save the old screenshot command if it exists
+        self.old_screenshot = self.bot.get_command("screenshot")
+        if self.old_screenshot:
+            self.bot.remove_command("screenshot")
+
+    def cog_unload(self):
+        # Restore the old screenshot command if it existed
+        if self.old_screenshot:
+            try:
+                self.bot.remove_command("screenshot")
+            except Exception as e:
+                log.error(f"Error removing screenshot command: {e}")
+            self.bot.add_command(self.old_screenshot)
 
     def ensure_chrome_installed(self):
         """
@@ -178,3 +191,8 @@ class Screenshot(Cog):
                 log.info(f"Dynamic content loaded for selector: {selector}")
         except Exception as e:
             log.warning(f"Dynamic content may not be fully loaded: {e}")
+
+async def setup(bot):
+    old_screenshot = bot.get_command("screenshot")
+    if old_screenshot:
+        bot.remove_command(old_screenshot.name)
