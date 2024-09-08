@@ -9,6 +9,7 @@ import random
 
 import discord
 import pandas as pd
+from Star_Utils import Cog
 from aiocache import cached
 from discord import app_commands
 from discord.ext.commands import Command, Cog, Group
@@ -25,7 +26,7 @@ _ = Translator("AutoDocs", __file__)
 PRIVILEGE_LEVELS = ["user", "mod", "admin", "guildowner", "botowner"]
 
 @cog_i18n(_)
-class AutoDocs(commands.Cog):
+class AutoDocs(Cog):
     """
     Document your cogs with ease!
 
@@ -342,7 +343,7 @@ class AutoDocs(commands.Cog):
 
 # Now, integrating the documentation generation into the AutoDocSite class
 
-class AutoDocSite(commands.Cog):
+class AutoDocSite(Cog):
     """
     Automatically generate a documentation site for every cog in the bot.
     """
